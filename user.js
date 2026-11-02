@@ -15,7 +15,11 @@ export const signup = async (req, res) => {
       buildingNumber,
       landmark1,
       landmark2,
-      pincode
+      pincode,
+      qualification,
+      skills,
+      resume,
+      photo
     } = req.body;
 
     const foundUser = await User.findOne({ email });
@@ -48,7 +52,11 @@ export const signup = async (req, res) => {
       buildingNumber,
       landmark1,
       landmark2,
-      pincode
+      pincode,
+      quatification,
+      skills,
+      resume,
+      photo
     });
 
     const token = jwt.sign(
@@ -69,6 +77,22 @@ export const signup = async (req, res) => {
         gender: newUser.gender
       }
     });
+    
+
+
+    import upload from "../middleware/upload.middleware.js";
+
+router.post(
+
+  upload.fields([
+    { name: "resume", maxCount: 5 },
+    { name: "photo", maxCount: 5 }
+  ]),
+  validate(signupSchema),
+  signup
+  );
+  )
+);
 
   } catch (error) {
     res.status(500).json({
